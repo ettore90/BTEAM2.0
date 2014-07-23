@@ -150,7 +150,7 @@
                             <a href="#" class="plugin-filter" data-filter="projects">Projects</a>
                         </li>
                         <li>
-                            <a href="#" class="plugin-filter" data-filter="illustration">Tutorials</a>
+                            <a href="#" class="plugin-filter" data-filter="tutorials">Tutorials</a>
                         </li>
                     </ul>
                 </nav>
@@ -165,36 +165,43 @@
                         portfolio-items: Customise portfolio items for hover effect.
                 -->
                 <ul class="thumbnails plugin-filter-elements portfolio-items">
-                  
-                    <li class="span4">
-                        <a href="/pages/portfolio/project_1/">
+                    <li class="span4 mix projects">
+                        <a href="/pages/project_1/" data-destination="portfolio-items" data-insert="before">
                             <!-- Portfolio image -->
-                            <div style="height:13em; width:100%; background-image:url(http://inside.flipboard.com/wp-content/uploads/2011/04/guardian_header_3.jpg); background-position:center center; background-size:cover;"></div>
+                            <img src="http://placehold.it/390x300" alt="Treble">
+                            
+                            <!-- Portfolio name, activated on hover -->
+                            <div class="portfolio-overlay">
+                                <h4>The Guardian API</h4>
+                            </div>
                         </a>
                     </li>
-                  
                     <li class="span4 mix projects">
-                        <a href="#pages/portfolio/project_2.html" data-destination="portfolio-items" data-insert="before">
-                          <div style="height:10em; width:100%; background-image:url(http://www.kentooz.com/wp-content/uploads/2013/07/twitter-api.png); background-position:center center; background-size:cover;"></div>
+                        <a href="/pages/project_2/" data-destination="portfolio-items" data-insert="before">
+                            <!-- Portfolio image -->
+                            <img src="http://placehold.it/390x300" alt="Treble">
+                            
+                            <!-- Portfolio name, activated on hover -->
                             <div class="portfolio-overlay">
                                 <h4>Twitter API</h4>
                             </div>
                         </a>
                     </li>
-                  
-                    <li class="span4 mix photography illustration">
-                        <a href="#pages/portfolio/project_3.html" data-destination="portfolio-items" data-insert="before">
-                          <div style="height:10em; width:100%; background-image:url(https://lh4.googleusercontent.com/-KM43FndCJtE/U8QLsJeoskI/AAAAAAAABAw/_bBdne9jIig/w598-h530-no/learnyounode.tiff); background-position:center center; background-size:cover;"></div>
+                    <li class="span4 mix tutorials">
+                        <a href="/pages/project_3/" data-destination="portfolio-items" data-insert="before">
+                            <!-- Portfolio image -->
+                            <img src="http://placehold.it/390x300" alt="Treble">
+                            
+                            <!-- Portfolio name, activated on hover -->
                             <div class="portfolio-overlay">
-                                <h4>Learn you NodeJs</h4>
+                                <h4>Learn NodeJS</h4>
                             </div>
                         </a>
                     </li>
-                  
-                  <li class="span4 mix projects">
-                        <a href="/pages/portfolio/project_5/" data-destination="portfolio-items" data-insert="before">
+                    <li class="span4 mix projects">
+                        <a href="/pages/project_5/" data-destination="portfolio-items" data-insert="before">
                             <!-- Portfolio image -->
-                          <div style="height:10em; width:100%; background-image:url(http://bgc-dml.wdfiles.com/local--files/d3/D3.jpg); background-position:center center; background-size:cover;"></div>
+                            <img src="http://placehold.it/390x300" alt="Treble">
                             
                             <!-- Portfolio name, activated on hover -->
                             <div class="portfolio-overlay">
@@ -202,43 +209,22 @@
                             </div>
                         </a>
                     </li>
-
-                    <li class="span4 mix photography illustration">
-                        <a href="#pages/portfolio/project_4.html" data-destination="portfolio-items" data-insert="before">
-                          <div style="height:10em; width:100%; background-image:url(https://lh5.googleusercontent.com/-P6p6WDbNW2Q/U8QNUjfyu1I/AAAAAAAABBQ/2QyeCqkkAl8/w821-h415-no/jekyll.tiff); background-position:center center; background-size:cover;"></div>
+                    <li class="span4 mix tutorials">
+                        <a href="/pages/project_6/" data-destination="portfolio-items" data-insert="before">
+                            <!-- Portfolio image -->
+                            <img src="http://placehold.it/390x300" alt="Treble">
+                            
+                            <!-- Portfolio name, activated on hover -->
                             <div class="portfolio-overlay">
-                                <h4>Liquid template with Jekyll</h4>
+                                <h4>Liquid template</h4>
                             </div>
                         </a>
                     </li>
-                  
                 </ul>
             </article>
             <!-- End Article -->
         </div>
     </div>
-
-
-        <!-- Blog post -->
-        <li class="span4">
-          <!-- Blog image -->
-          <a href="/blog/2014/06/27/Interview/">
-            <div style="height:13em; width:100%; background-image:url(https://pbs.twimg.com/media/BsRNABAIgAELXjH.jpg:large); background-position:center center; background-size:cover;" ></div>
-          </a>
-          <!-- Blog title -->
-          <h5>
-            Stefan Fowler interview<br/>
-            <small>Brian, Jun 27, 2014</small>
-          </h5>
-
-          <!-- Blog post description -->
-          <p class="smallFontBy08"><p>Just a smidge of extra pressure came to bear yesterday as the teams had to present their week two project...</p>
-
-          <!-- Blog read more -->
-          <div class="read-more">
-            <a href="/blog/2014/06/27/Interview/">Read More...</a>
-          </div>
-        </li>
     <!-- END PAGE | WORK -->
 
     <!-- PAGE | FEATURES  -->
