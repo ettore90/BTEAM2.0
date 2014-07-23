@@ -9,4 +9,6 @@ image: "https://pbs.twimg.com/media/BrIpRMQIIAAQewB.jpg"
 ---
 
 
-It would be fair to expect a lul in the penultimate week of a 7 week course but, if anything, things are picking up. The skills we’ve hacked together over our short time here, are close to being well rounded enough to begin real work. We are hoping to begin our first paid web development, . Seven days to fill in a database/testing sized hole and we should be ready. It is incredible what you can do in a short space of time, with enough work and commitment. 
+It would be fair to expect a lul in the penultimate week of a 7 week course - not here though! At Founders and Coders, things are picking up. The skills we’ve hacked together over our short time here are about ready for a field test. Seven days from now we will begin paid web development. Time to clear ambiguities, plug holes and work out a decent testing protocal. We should (God help us) be ready.
+
+You really can do a lot in a short space of time, with enough work and commitment.

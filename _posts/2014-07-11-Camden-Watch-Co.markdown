@@ -8,4 +8,4 @@ media: <img src="https://pbs.twimg.com/media/Brpk7kHIMAAxWZJ.jpg:large">
 image: "https://pbs.twimg.com/media/Brpl4LqCQAA78pa.jpg:large"
 ---
 
-Party time! Our friends of Camden Watch company launched this evening their start up, we were all invited.
+Party time! Our friends at the Camden Watch company had their launch party this evening. Their watches are great, check them out!
