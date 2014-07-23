@@ -10,4 +10,6 @@ image: "http://www.thephatstartup.com/wp-content/uploads/2012/08/HardWork.jpg"
 
 
 
-Today, we’ ve been asked to help get the word out to potential students, for the next course. Typically, you tend to think of recent graduates of STEM subjects as being prime for something like this. Having said that, our cohort is pretty eclectic. People have come from all walks of life: Design, language, philosophy, to name a few. It’s not necessarily obvious who’s going to do well. Certainly, within our group, there isn’t much of a correlation between STEM and programming proficiency. The best on the course have been the hardest working. That’s the characteristic I’ll look for when I’m reaching out to  potential candidates.
+We’ve been asked to help look for student for the next course. Typically, you might think of recent graduates of STEM subjects as being well placed for something like this. Having said that, our cohort is pretty eclectic. People have come from all walks of life: Design, language, philosophy, aswell as maths and physics. It’s not necessarily obvious who’s going to manage best. Wthin our group, there isn’t much of a correlation between STEM and programming proficiency. The best on the course have been the hardest working. 
+
+When I'm looking for potential candidates, I'll look for people who can graft.
