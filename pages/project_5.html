@@ -26,7 +26,7 @@ title: The price of Cocaine
       var projection = d3.geo.orthographic()
       .scale(width / 3)
       .clipAngle(90)
-      .translate([width / 2, height / 2]);
+      .translate([width / 2.8, height / 2]);
 
       var graticule = d3.geo.graticule();
 
@@ -85,9 +85,9 @@ title: The price of Cocaine
             context.fill();
 
             context.save();
-            context.translate(width / 2, 0);
+            context.translate(width / 2.8, 0);
             context.scale(-1, 1);
-            context.translate(-width / 2, 0);
+            context.translate(-width / 2.8, 0);
             projection.rotate([λ + 180, -φ]);
 
             context.beginPath();
