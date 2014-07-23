@@ -19,6 +19,7 @@
                                    
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="/assets/style/bootstrap.css"/>
+    <link rel="stylesheet" href="/assets/style/local.css"/>
     
     <!-- GOOGLE WEB FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,600,300,800' rel='stylesheet' type='text/css'>
@@ -78,7 +79,7 @@
             <!-- End Header -->
          <div class="span5" style="background:#fcfcfa; border-style:groove; width:400; height:300;">
   <center>
-    <h2>From twitter</h2>
+    <h2>Latest from twitter</h2>
     <div id='tweets'></div>
   </center>
 </div>
@@ -86,6 +87,34 @@
 <div class="span6">
   <article>
 This applet fetches images from the twitter API, live. The twitter API requires a bit of coaxing. Much of the work we did here went into understanding the concepts behind the functionality. For those that are interested, our server is hosted on Heroku.
+    
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#html</span>
+
+<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;</span><span class="no">Latest</span> <span class="n">from</span> <span class="n">twitter</span><span class="o">&lt;</span><span class="sr">/h2&gt;</span>
+<span class="sr">  &lt;div id=&#39;tweets&#39;&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/center&gt;</span>
+
+<span class="sr">#javascript</span>
+<span class="sr">    </span>
+<span class="sr">&lt;script src=&quot;http:/</span><span class="o">/</span><span class="n">code</span><span class="o">.</span><span class="n">jquery</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">jquery</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">10</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="n">js</span><span class="s2">&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">&lt;script src=&quot;</span><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="n">code</span><span class="o">.</span><span class="n">jquery</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ui</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">10</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="n">jquery</span><span class="o">-</span><span class="n">ui</span><span class="o">.</span><span class="n">js</span><span class="s2">&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">&lt;script&gt;</span>
+<span class="s2">  $.ajax({</span>
+<span class="s2">    url: &quot;</span><span class="ss">http</span><span class="p">:</span><span class="sr">//o</span><span class="n">bscure</span><span class="o">-</span><span class="n">ridge</span><span class="o">-</span><span class="mi">8042</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="s2">&quot;,</span>
+<span class="s2">    dataType: &quot;</span><span class="n">json</span><span class="s2">&quot;,</span>
+
+<span class="s2">    success: function(data) {</span>
+<span class="s2">      $.each(data.statuses, function () {</span>
+<span class="s2">        $( &quot;</span><span class="c1">#tweets&quot; )</span>
+        <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="err">$</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="p">{</span>
+          <span class="ss">src</span><span class="p">:</span> <span class="n">this</span><span class="o">[</span><span class="s1">&#39;&lt;img&gt;&#39;</span><span class="o">]</span><span class="p">,</span>
+          <span class="ss">style</span><span class="p">:</span> <span class="s2">&quot;padding-top:10px&quot;</span>
+        <span class="p">}));</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="sr">/script&gt;</span></code></pre></div>
   </article>
 </div>
 

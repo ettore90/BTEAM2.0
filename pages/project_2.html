@@ -5,7 +5,7 @@ title: Image tweets for Founders&Coders
 
 <div class="span5" style="background:#fcfcfa; border-style:groove; width:400; height:300;">
   <center>
-    <h2>From twitter</h2>
+    <h2>Latest from twitter</h2>
     <div id='tweets'></div>
   </center>
 </div>
@@ -13,6 +13,37 @@ title: Image tweets for Founders&Coders
 <div class="span6">
   <article>
 This applet fetches images from the twitter API, live. The twitter API requires a bit of coaxing. Much of the work we did here went into understanding the concepts behind the functionality. For those that are interested, our server is hosted on Heroku.
+    
+{% highlight ruby %}
+
+#html
+
+<center>
+  <h2>Latest from twitter</h2>
+  <div id='tweets'></div>
+</center>
+
+#javascript
+    
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+  $.ajax({
+    url: "http://obscure-ridge-8042.herokuapp.com/",
+    dataType: "json",
+
+    success: function(data) {
+      $.each(data.statuses, function () {
+        $( "#tweets" )
+        .append($('img', {
+          src: this['<img>'],
+          style: "padding-top:10px"
+        }));
+      });
+    }
+  });
+</script>
+{% endhighlight %}
   </article>
 </div>
 

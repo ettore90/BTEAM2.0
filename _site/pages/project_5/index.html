@@ -19,6 +19,7 @@
                                    
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="/assets/style/bootstrap.css"/>
+    <link rel="stylesheet" href="/assets/style/local.css"/>
     
     <!-- GOOGLE WEB FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,600,300,800' rel='stylesheet' type='text/css'>
@@ -231,6 +232,161 @@
 <div id="map" class="span5">
   <article>
     The project is finished and this is our result. The map shows the price per gram and them per kilo of cocaine around the world.
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#html</span>
+
+<span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;btn-retail&quot;</span><span class="o">&gt;</span><span class="no">Retail</span> <span class="n">price</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
+<span class="sr">    &lt;button id=&quot;btn-whole&quot;&gt;Wholesale&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+<span class="sr">    </span>
+<span class="sr">#javascript</span>
+<span class="sr">  </span>
+<span class="sr">&lt;script src=&quot;http:/</span><span class="o">/</span><span class="n">d3js</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">d3</span><span class="o">.</span><span class="n">v3</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">js</span><span class="s2">&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">&lt;script src=&quot;</span><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="n">d3js</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">topojson</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">js</span><span class="s2">&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">&lt;script&gt;</span>
+<span class="s2">  var color = &quot;</span><span class="n">red</span><span class="s2">&quot;;</span>
+<span class="s2">  var selected_index = 0;</span>
+
+<span class="s2">  function startAnimation () {</span>
+
+<span class="s2">    var width = 400,</span>
+<span class="s2">        height = 300,</span>
+<span class="s2">        speed = -1e-2,</span>
+<span class="s2">        start = Date.now();</span>
+
+<span class="s2">    var sphere = {type: &quot;</span><span class="no">Sphere</span><span class="s2">&quot;};</span>
+
+<span class="s2">    var projection = d3.geo.orthographic()</span>
+<span class="s2">    .scale(width / 3)</span>
+<span class="s2">    .clipAngle(90)</span>
+<span class="s2">    .translate([width / 2.8, height / 2]);</span>
+
+<span class="s2">    var graticule = d3.geo.graticule();</span>
+
+<span class="s2">    var canvas = d3.select(&quot;</span><span class="c1">#map&quot;).append(&quot;canvas&quot;)</span>
+    <span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span>
+
+    <span class="n">var</span> <span class="n">context</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">node</span><span class="p">()</span><span class="o">.</span><span class="n">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">);</span>
+
+    <span class="n">var</span> <span class="n">path</span> <span class="o">=</span> <span class="n">d3</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">path</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+    <span class="n">d3</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;/assets/js/data.json&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">rawData</span><span class="p">){</span>
+
+      <span class="n">var</span> <span class="n">price</span> <span class="o">=</span> <span class="p">{};</span>
+      <span class="sr">/* store data on the fly</span>
+<span class="sr">                    var price = {</span>
+<span class="sr">                        ID: [</span>
+<span class="sr">                        &quot;retail_price&quot;,</span>
+<span class="sr">                        &quot;wholesale_price&quot;,</span>
+<span class="sr">                        &quot;country_name&quot;]</span>
+<span class="sr">                    }</span>
+<span class="sr">                    */</span>
+
+      <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">rawData</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">var</span> <span class="n">datum</span> <span class="o">=</span> <span class="n">rawData</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+        <span class="n">var</span> <span class="n">country_id</span> <span class="o">=</span> <span class="n">datum</span><span class="o">[</span><span class="s2">&quot;Alpha-2&quot;</span><span class="o">]</span><span class="p">,</span>
+            <span class="n">retail_price</span> <span class="o">=</span> <span class="n">datum</span><span class="o">[</span><span class="s2">&quot;Retail price&quot;</span><span class="o">]</span><span class="p">,</span>
+            <span class="n">wholesale_price</span> <span class="o">=</span> <span class="n">datum</span><span class="o">[</span><span class="s2">&quot;Wholesale price&quot;</span><span class="o">]</span><span class="p">,</span>
+            <span class="n">country_name</span> <span class="o">=</span> <span class="n">datum</span><span class="o">[</span><span class="s2">&quot;Country name&quot;</span><span class="o">]</span><span class="p">;</span>
+
+        <span class="n">price</span><span class="o">[</span><span class="n">country_id</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">retail_price</span><span class="p">,</span> <span class="n">wholesale_price</span><span class="p">,</span> <span class="n">country_name</span><span class="o">]</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">);</span>
+      <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">price</span><span class="p">);</span>
+
+
+      <span class="n">d3</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;/assets/js/world.json&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">topo</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">var</span> <span class="n">land</span> <span class="o">=</span> <span class="n">topojson</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">topo</span><span class="p">,</span> <span class="n">topo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">subunits</span><span class="p">),</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">graticule</span><span class="p">();</span>
+
+        <span class="n">d3</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="n">var</span> <span class="err">λ</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">*</span> <span class="p">(</span><span class="no">Date</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">),</span>
+              <span class="err">φ</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span><span class="p">;</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+          <span class="n">path</span><span class="p">(</span><span class="n">sphere</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">strokeStyle</span> <span class="o">=</span> <span class="s2">&quot;#000&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">stroke</span><span class="p">();</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fillStyle</span> <span class="o">=</span> <span class="s2">&quot;#fff&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fill</span><span class="p">();</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">save</span><span class="p">();</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="o">.</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="o">-</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="o">.</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+          <span class="n">projection</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">[</span><span class="err">λ</span> <span class="o">+</span> <span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="err">φ</span><span class="o">]</span><span class="p">);</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+          <span class="n">path</span><span class="p">(</span><span class="n">land</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fillStyle</span> <span class="o">=</span> <span class="s2">&quot;#dadac4&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fill</span><span class="p">();</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+          <span class="n">path</span><span class="p">(</span><span class="n">grid</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">strokeStyle</span> <span class="o">=</span> <span class="s2">&quot;rgba(119,119,119,.5)&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">stroke</span><span class="p">();</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">restore</span><span class="p">();</span>
+          <span class="n">projection</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">[</span><span class="err">λ</span><span class="p">,</span> <span class="err">φ</span><span class="o">]</span><span class="p">);</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+          <span class="n">path</span><span class="p">(</span><span class="n">grid</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">strokeStyle</span> <span class="o">=</span> <span class="s2">&quot;rgba(119,119,119,.5)&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">stroke</span><span class="p">();</span>
+
+          <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+          <span class="n">path</span><span class="p">(</span><span class="n">land</span><span class="p">);</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fillStyle</span> <span class="o">=</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">fill</span><span class="p">();</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">strokeStyle</span> <span class="o">=</span> <span class="s2">&quot;#000&quot;</span><span class="p">;</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">stroke</span><span class="p">();</span>
+
+          <span class="n">var</span> <span class="n">upper_end</span> <span class="o">=</span> <span class="o">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">30000</span><span class="o">][</span><span class="n">selected_index</span><span class="o">]</span><span class="p">;</span>
+          <span class="n">var</span> <span class="n">colorScale</span> <span class="o">=</span> <span class="n">d3</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">linear</span><span class="p">()</span>
+          <span class="o">.</span><span class="n">domain</span><span class="p">(</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper_end</span><span class="o">]</span><span class="p">)</span>
+          <span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="o">[</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">]</span><span class="p">);</span>
+
+          <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">a</span><span class="o">&lt;</span><span class="n">land</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">a</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">price</span><span class="o">[</span><span class="n">land</span><span class="o">.</span><span class="n">features</span><span class="o">[</span><span class="n">a</span><span class="o">].</span><span class="n">id</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">price</span><span class="o">[</span><span class="n">land</span><span class="o">.</span><span class="n">features</span><span class="o">[</span><span class="n">a</span><span class="o">].</span><span class="n">id</span><span class="o">][</span><span class="n">selected_index</span><span class="o">]</span> <span class="p">)</span> <span class="p">{</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">beginPath</span><span class="p">();</span>
+              <span class="n">path</span><span class="p">(</span><span class="n">land</span><span class="o">.</span><span class="n">features</span><span class="o">[</span><span class="n">a</span><span class="o">]</span><span class="p">);</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">fill</span><span class="p">();</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">fillStyle</span> <span class="o">=</span> <span class="n">colorScale</span><span class="p">(</span><span class="n">price</span><span class="o">[</span><span class="n">land</span><span class="o">.</span><span class="n">features</span><span class="o">[</span><span class="n">a</span><span class="o">].</span><span class="n">id</span><span class="o">][</span><span class="n">selected_index</span><span class="o">]</span><span class="p">);</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="p">;</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">strokeStyle</span> <span class="o">=</span> <span class="s2">&quot;#000&quot;</span><span class="p">;</span>
+              <span class="n">context</span><span class="o">.</span><span class="n">stroke</span><span class="p">();</span>
+            <span class="p">};</span>
+          <span class="p">};</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+      <span class="n">d3</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">frameElement</span><span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="s2">&quot;px&quot;</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="n">startAnimation</span><span class="p">();</span>
+
+  <span class="n">d3</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#btn-retail&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">selected_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="n">d3</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#btn-whole&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">selected_index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="sr">/script&gt;</span></code></pre></div>
+
   </article>
 </div>   
         </div>
