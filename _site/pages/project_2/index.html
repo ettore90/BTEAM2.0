@@ -87,7 +87,8 @@
 <div class="span6">
   <article>
 This applet fetches images from the twitter API, live. The twitter API requires a bit of coaxing. Much of the work we did here went into understanding the concepts behind the functionality. For those that are interested, our server is hosted on Heroku.
-    
+
+<h6>Client side</h6>
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#html</span>
 
 <span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;</span>
@@ -115,6 +116,77 @@ This applet fetches images from the twitter API, live. The twitter API requires 
     <span class="p">}</span>
   <span class="p">});</span>
 <span class="o">&lt;</span><span class="sr">/script&gt;</span></code></pre></div>
+    
+<h6>Server side</h6>
+    <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">index</span><span class="o">.</span><span class="n">js</span> <span class="o">=============================</span>
+
+<span class="n">var</span> <span class="n">http</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">),</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">),</span>
+    <span class="n">twitter</span> <span class="o">=</span> <span class="nb">require</span> <span class="p">(</span><span class="s1">&#39;./module.js&#39;</span><span class="p">);</span>
+
+<span class="n">http</span><span class="o">.</span><span class="n">createServer</span><span class="p">(</span><span class="n">function</span> <span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">){</span>
+  <span class="sr">//</span><span class="n">function</span> <span class="n">called</span> <span class="n">from</span> <span class="n">module</span><span class="o">.</span><span class="n">js</span>
+	<span class="n">twitter</span><span class="p">(</span><span class="s1">&#39;foundersandcoders&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">res</span><span class="p">){</span>
+		<span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+
+		<span class="n">fs</span><span class="o">.</span><span class="n">readFile</span><span class="p">(</span><span class="s1">&#39;data.json&#39;</span><span class="p">,</span> <span class="n">function</span> <span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">response</span><span class="o">.</span><span class="n">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/json&quot;</span><span class="p">,</span> 
+                               <span class="s2">&quot;Access-Control-Allow-Origin&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">})</span>
+      <span class="n">response</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="p">});</span>
+	<span class="p">});</span>
+<span class="p">})</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">PORT</span><span class="p">);</span> <span class="sr">//</span><span class="mi">8080</span> <span class="ow">or</span> <span class="n">process</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">PORT</span>
+    
+<span class="n">module</span><span class="o">.</span><span class="n">js</span> <span class="o">============================</span>
+    
+<span class="n">var</span> <span class="no">Twit</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;twit&#39;</span><span class="p">),</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;./api_keys&#39;</span><span class="p">);</span>
+
+<span class="n">var</span> <span class="n">T</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">Twit</span><span class="p">(</span><span class="n">keys</span><span class="p">);</span>
+
+<span class="n">var</span> <span class="n">withMedia</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">item</span><span class="p">){</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;RT&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">media</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">var</span> <span class="n">newOrder</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">item</span><span class="p">){</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nb">name</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="ss">text</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+    <span class="ss">img</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">media</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">media_url</span><span class="p">,</span>
+    <span class="ss">data</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+    <span class="ss">location</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">location</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="n">function</span> <span class="p">(</span><span class="n">search_name</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">T</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search/tweets&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="ss">q</span><span class="p">:</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">search_name</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="p">},</span> 
+
+<span class="n">function</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">callback</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">null</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">var</span> <span class="n">jsonData</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">statuses</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">statuses</span>
+                                 <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">withMedia</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">newOrder</span><span class="p">)};</span>
+    
+      <span class="n">var</span> <span class="n">storeName</span> <span class="o">=</span> <span class="s1">&#39;data.json&#39;</span><span class="p">;</span>
+    
+    <span class="n">fs</span><span class="o">.</span><span class="n">writeFile</span><span class="p">(</span><span class="n">storeName</span><span class="p">,</span> <span class="no">JSON</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">jsonData</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;JSON saved to &quot;</span> <span class="o">+</span> <span class="n">storeName</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="n">callback</span><span class="p">(</span><span class="n">null</span><span class="p">,</span> <span class="s2">&quot;Process completed...&quot;</span><span class="p">)</span>
+    <span class="p">});</span>
+    <span class="p">};</span>
+ <span class="p">});</span>
+<span class="p">};</span></code></pre></div>
+    
   </article>
 </div>
 

@@ -13,9 +13,9 @@ title: Image tweets for Founders&Coders
 <div class="span6">
   <article>
 This applet fetches images from the twitter API, live. The twitter API requires a bit of coaxing. Much of the work we did here went into understanding the concepts behind the functionality. For those that are interested, our server is hosted on Heroku.
-    
-{% highlight ruby %}
 
+<h6>Client side</h6>
+{% highlight ruby %}
 #html
 
 <center>
@@ -44,6 +44,79 @@ This applet fetches images from the twitter API, live. The twitter API requires 
   });
 </script>
 {% endhighlight %}
+    
+<h6>Server side</h6>
+    {% highlight ruby %}
+index.js =============================
+
+var http = require('http'),
+    fs = require('fs'),
+    url = require('url'),
+    twitter = require ('./module.js');
+
+http.createServer(function (request, response){
+  //function called from module.js
+	twitter('foundersandcoders', function(err, res){
+		console.log(res);
+
+		fs.readFile('data.json', function (err, data) {
+      response.writeHead(200, {"Content-Type": "text/json", 
+                               "Access-Control-Allow-Origin": "*"})
+      response.end(data)
+    });
+	});
+}).listen(process.env.PORT); //8080 or process.env.PORT
+    
+module.js ============================
+    
+var Twit = require('twit'),
+    fs = require('fs'),
+    keys = require('./api_keys');
+
+var T = new Twit(keys);
+
+var withMedia = function(item){
+  if (item.text.substring(0,2) != "RT") {
+    return item.entities.media;
+  }
+};
+
+var newOrder = function(item){
+  return {
+    name: item.user.name,
+    text: item.text,
+    img: item.entities.media[0].media_url,
+    data: item.created_at,
+    location: item.user.location
+  }
+};
+
+module.exports = function (search_name, callback) {
+  T.get('search/tweets', { q: '"' + search_name + '"' }, 
+
+function(err, data, response) {
+    if (err) {
+      callback(err, null);
+    } else {
+      var jsonData = { statuses: data.statuses
+                                 .filter(withMedia)
+                                 .map(newOrder)};
+    
+      var storeName = 'data.json';
+    
+    fs.writeFile(storeName, JSON.stringify(jsonData, null, 4), function(err) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log("JSON saved to " + storeName);
+      }
+      callback(null, "Process completed...")
+    });
+    };
+ });
+};
+    {% endhighlight %}
+    
   </article>
 </div>
 
