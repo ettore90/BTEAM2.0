@@ -4,8 +4,8 @@ title:  Why we work. When we work.
 date: 2014-06-29 19:56:47
 categories: blog
 author: Izaak
-media: <img src="http://www.mike-anderson-digital.co.uk/files/2813/6577/0639/broken-computer.jpg">
-image: "http://www.mike-anderson-digital.co.uk/files/2813/6577/0639/broken-computer.jpg"
+media: <img src="https://lh6.googleusercontent.com/-pUpsPYPK-HE/U859ee2dvVI/AAAAAAAAD2E/WpDehFb_sec/w1004-h564-no/IMG_20140626_154840580.jpg">
+image: "https://lh6.googleusercontent.com/-pUpsPYPK-HE/U859ee2dvVI/AAAAAAAAD2E/WpDehFb_sec/w1004-h564-no/IMG_20140626_154840580.jpg"
 ---
 
 Founders and Coders has been the one of the most intense academic challenges of my life. If it wasn’t for the last few weeks of my degree, I would be completely unfamiliar with the volume of work we’ve managed to get through so far. This time around, however, the work is a lot more enjoyable. 

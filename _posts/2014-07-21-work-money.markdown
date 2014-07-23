@@ -4,8 +4,8 @@ title:  Work, money, progress.
 date: 2014-07-21 23:14:47
 categories: blog
 author: Izaak
-media: <img src="http://www.mike-anderson-digital.co.uk/files/2813/6577/0639/broken-computer.jpg">
-image: "http://www.mike-anderson-digital.co.uk/files/2813/6577/0639/broken-computer.jpg"
+media: <img src="https://pbs.twimg.com/media/BrIpRMQIIAAQewB.jpg">
+image: "https://pbs.twimg.com/media/BrIpRMQIIAAQewB.jpg"
 ---
 
 
